@@ -23,7 +23,7 @@ class GUIConfig(customtkinter.CTk):
         
            
         #Adds logo to top left corner
-        logo_path = "C:\\Users\\hanna\\Desktop\\Python\\CN Project\\StudyBat_Logo.png"
+        logo_path = "StudyBat_Logo.png"
         logo = Image.open(logo_path)
         logo = logo.resize((228, 50), Image.LANCZOS)
         self.photo = ImageTk.PhotoImage(logo)
