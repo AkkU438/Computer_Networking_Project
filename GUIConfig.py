@@ -14,7 +14,7 @@ class GUIConfig(customtkinter.CTk):
         #Example for how to add widgets/elements with grid, look at documentation for more information: https://customtkinter.tomschimansky.com
         """ self.button1 = customtkinter.CTkButton(self, text="Login")
         self.button1.grid(row=1, column=0, sticky="nw")
-        
+         
         self.button2 = customtkinter.CTkButton(self, text="Login")
         self.button2.grid(row=1, column=1, sticky="nw")
         
@@ -31,10 +31,9 @@ class GUIConfig(customtkinter.CTk):
         self.image_label.grid(row=0, column=0, padx=(10, 0), pady=(10, 0), sticky="nw")
         
         
-    
-
-customtkinter.set_appearance_mode("dark")
-customtkinter.set_default_color_theme("customTheme.json")
-app = GUIConfig()
-app.mainloop()
+if __name__ == "__main__":
+    customtkinter.set_appearance_mode("dark")
+    customtkinter.set_default_color_theme("customTheme.json")
+    app = GUIConfig()
+    app.mainloop()    
 
