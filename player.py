@@ -1,25 +1,28 @@
 import socket
 import customtkinter
 from SceneManager import SceneManager  # Import SceneManager to handle scenes
+from game import game
+from gameOver import gameOver
+from home import home
 
 class UDPClient:
     def __init__(self, server_ip, server_port):
         self.server_ip = server_ip
         self.server_port = server_port
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create UDP socket
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create UDP socket
     
     def send_message(self, message):
         """Send message to the server."""
-        self.sock.sendto(message.encode(), (self.server_ip, self.server_port))
+        self.socket.sendto(message.encode(), (self.server_ip, self.server_port))
 
     def receive_message(self):
         """Receive message from the server."""
-        data, _ = self.sock.recvfrom(1024)
+        data, _ = self.socket.recvfrom(1024)
         return data.decode()
 
     def close(self):
         """Close the socket."""
-        self.sock.close()
+        self.socket.close()
 
 
 class PlayerApp(customtkinter.CTk):
@@ -46,54 +49,9 @@ class PlayerApp(customtkinter.CTk):
         """Show a specific scene."""
         for scene in self.scenes.values():
             scene.pack_forget()
+        if name == "Game" and hasattr(self.scenes[name], "connect_to_server"):
+            self.scenes[name].connect_to_server()
         self.scenes[name].pack(fill="both", expand=True)
-
-
-# Game class with UDP Client integration (example)
-class game(customtkinter.CTkFrame):
-    def __init__(self, parent, manager, client):
-        super().__init__(parent)
-        self.client = client  # Store client instance
-        
-        label = customtkinter.CTkLabel(self, text="This is Game", font=("Arial", 24))
-        label.pack(pady=50)
-
-        button = customtkinter.CTkButton(self, text="Press to win", command=self.send_win_message)
-        button.pack(pady=20)
-
-        button = customtkinter.CTkButton(self, text="Go to Home", command=lambda: manager.show_scene("Home"))
-        button.pack(pady=0)
-
-    def send_win_message(self):
-        # Send a message to the server indicating the player won
-        self.client.send_message("Player has won!")
-
-
-# Game Over class (example)
-class gameOver(customtkinter.CTkFrame):
-    def __init__(self, parent, manager, client):
-        super().__init__(parent)
-        self.client = client  # Store client instance
-        
-        label = customtkinter.CTkLabel(self, text="You win", font=("Arial", 24))
-        label.pack(pady=50)
-
-        button = customtkinter.CTkButton(self, text="Go to Home", command=lambda: manager.show_scene("Home"))
-        button.pack(pady=20)
-
-
-# Home class (example)
-class home(customtkinter.CTkFrame):
-    def __init__(self, parent, manager, client):
-        super().__init__(parent)
-        self.client = client  # Store client instance
-        
-        label = customtkinter.CTkLabel(self, text="This is Home", font=("Arial", 24))
-        label.pack(pady=50)
-
-        button = customtkinter.CTkButton(self, text="Go to Game", command=lambda: manager.show_scene("Game"))
-        button.pack(pady=20)
-
 
 def main():
     # Initialize UDP client with server IP and port
