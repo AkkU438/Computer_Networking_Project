@@ -1,0 +1,13 @@
+from PIL import Image, ImageTk
+import customtkinter
+from GUIConfig import GUIConfig
+
+
+class loginGUI(GUIConfig):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        button = customtkinter.CTkButton(self, text="Login")
+        button.grid(row=0, column=1, padx=20, pady=20)
+        
+        
