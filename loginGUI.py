@@ -47,7 +47,9 @@ class loginGUI(GUIConfig):
                 errorMessage.grid(row=13, column=8, sticky='ew')
                 userEntry.delete(0, customtkinter.END)
                 passEntry.delete(0, customtkinter.END)
+
                 #go to main home
+
             elif((passEntry.get() != "")&(userEntry.get() != "")):
                 errorMessage = customtkinter.CTkLabel(self, text="User not found, please sign up or try again.", fg_color="transparent", text_color="gray14", font=("Agency FB Bold", 20))
                 errorMessage.grid(row=13, column=8, sticky='ew')
@@ -66,4 +68,5 @@ class loginGUI(GUIConfig):
         #labels
         loginLabel = customtkinter.CTkLabel(self, text="Login/Sign Up", fg_color="transparent", text_color="gray14", font=("Agency FB Bold", 40))
         loginLabel.grid(row=9, column=8, sticky='ew')
+
         
