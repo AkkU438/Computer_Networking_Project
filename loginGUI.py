@@ -1,7 +1,7 @@
 from PIL import Image, ImageTk
 import customtkinter
 from GUIConfig import GUIConfig
-
+from home import home
 
 class loginGUI(GUIConfig):
     def __init__(self, parent=None):
@@ -47,7 +47,8 @@ class loginGUI(GUIConfig):
                 errorMessage.grid(row=13, column=8, sticky='ew')
                 userEntry.delete(0, customtkinter.END)
                 passEntry.delete(0, customtkinter.END)
-                #go to main homw
+                #go to home
+                
             elif((passEntry.get() != "")&(userEntry.get() != "")):
                 errorMessage = customtkinter.CTkLabel(self, text="User not found, please sign up or try again.", fg_color="transparent", text_color="gray14", font=("Agency FB Bold", 20))
                 errorMessage.grid(row=13, column=8, sticky='ew')
