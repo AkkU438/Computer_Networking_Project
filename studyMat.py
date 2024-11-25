@@ -23,27 +23,30 @@ class FlashcardApp(GUIConfig):
 
 
         # Buttons for flipping and navigation
+        # Button for flipping flashcards to show answer
         self.flip_button = customtkinter.CTkButton(self, text="Flip", command=self.flip_card)
         self.flip_button.grid(row=3, column=1, pady=10, padx = 10, sticky="ew")
 
-
+        # Button for going to the previous flashcard
         self.prev_button = customtkinter.CTkButton(self, text="Previous", command=self.prev_card)
         self.prev_button.grid(row=3, column=0, pady=10, padx = 10, sticky="ew")
 
-
+        # Button for going to the next available flashcard
         self.next_button = customtkinter.CTkButton(self, text="Next", command=self.next_card)
         self.next_button.grid(row=3, column=2, pady=10, padx = 10, sticky="ew")
 
 
         # Input fields for creating new flashcards
+        # Field for questions
+        # Writing new questions for the flashcards
         self.new_question_entry = customtkinter.CTkEntry(self, placeholder_text="Enter question here")
         self.new_question_entry.grid(row=6, column=0, columnspan=3, padx=10, pady=5, sticky="ew")
 
-
+        # Field for answers
         self.new_answer_entry = customtkinter.CTkEntry(self, placeholder_text="Enter answer here")
         self.new_answer_entry.grid(row=7, column=0, columnspan=3, padx=10, pady=5, sticky="ew")
 
-
+        # Adds Flashcards
         self.add_card_button = customtkinter.CTkButton(self, text="Add Flashcard", command=self.add_flashcard)
         self.add_card_button.grid(row=8, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
@@ -57,14 +60,15 @@ class FlashcardApp(GUIConfig):
 
 
         # Edit and Delete buttons
+        # Edits exisiting flashcards
         self.edit_card_button = customtkinter.CTkButton(self, text="Edit", command=self.edit_flashcard)
         self.edit_card_button.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
 
-
+        # Deletes exisiting flashcards
         self.delete_card_button = customtkinter.CTkButton(self, text="Delete", command=self.delete_flashcard)
         self.delete_card_button.grid(row=5, column=1, padx=10, pady=10, sticky="ew")
 
-
+        # Saves existing flashcards
         self.save_button = customtkinter.CTkButton(self, text="Save", command=self.save_flashcards)
         self.save_button.grid(row=5, column=2, padx=10, pady=10, sticky="ew")
 
@@ -73,7 +77,7 @@ class FlashcardApp(GUIConfig):
         self.display_card()
         self.update_dropdown()
 
-
+        # Opens the JSON file
     def load_flashcards(self):
         """ Load flashcards from a JSON file or return an empty list if the file doesn't exist. """
         try:
@@ -82,14 +86,14 @@ class FlashcardApp(GUIConfig):
         except FileNotFoundError:
             return []
 
-
+        # Loads the flashcards the JSON file
     def save_flashcards(self):
         """ Save the current flashcards to a JSON file. """
         with open("flashcards.json", "w") as file:
             json.dump(self.flashcards, file)
         self.update_dropdown()
 
-
+        # Updates the dropdown so that the user can delete and edit for 
     def update_dropdown(self):
         """ Update the dropdown menu with the current flashcards. """
         dropdown_values = [f"Flashcard {i + 1}: {card['question']}" for i, card in enumerate(self.flashcards)]
@@ -97,7 +101,7 @@ class FlashcardApp(GUIConfig):
         if self.flashcards:
             self.selected_card_var.set(dropdown_values[0])  # Default to the first flashcard
 
-
+        # Displays for flashcards and their number
     def display_card(self):
         """ Display the current flashcard question or answer, along with its number. """
         if not self.flashcards:
@@ -106,24 +110,24 @@ class FlashcardApp(GUIConfig):
             self.showing_answer = False
             return
 
-
+        # Counter for flashcard number
         card = self.flashcards[self.current_card_index]
         card_number = f"Flashcard {self.current_card_index + 1} of {len(self.flashcards)}"
         self.card_number_label.configure(text=card_number)
 
-
+        # Shows answers
         if self.showing_answer:
             self.card_label.configure(text=f"Answer:\n{card['answer']}")
         else:
             self.card_label.configure(text=f"Question:\n{card['question']}")
 
-
+        # Flip cards to show answer or question
     def flip_card(self):
         """ Flip the flashcard to show the question or answer. """
         self.showing_answer = not self.showing_answer
         self.display_card()
 
-
+        # Goes to the next card
     def next_card(self):
         """ Go to the next flashcard. """
         if not self.flashcards:
@@ -132,7 +136,7 @@ class FlashcardApp(GUIConfig):
         self.showing_answer = False
         self.display_card()
 
-
+        # Go to the previous card
     def prev_card(self):
         """ Go to the previous flashcard. """
         if not self.flashcards:
@@ -141,33 +145,33 @@ class FlashcardApp(GUIConfig):
         self.showing_answer = False
         self.display_card()
 
-
+        # Go adds a new flashcard
     def add_flashcard(self):
         """ Add a new flashcard. """
         question = self.new_question_entry.get()
         answer = self.new_answer_entry.get()
 
-
+        # Adds a new flashcard to deck
         if question.strip() and answer.strip():
             self.flashcards.append({"question": question, "answer": answer})
             self.new_question_entry.delete(0, "end")
             self.new_answer_entry.delete(0, "end")
             self.update_dropdown()
 
-
+        # Deletes a flashcard from the deck
     def delete_flashcard(self):
         """ Delete the selected flashcard. """
         if not self.flashcards:
             return
 
-
+                
         selected_index = self.card_dropdown.cget("values").index(self.selected_card_var.get())
         self.flashcards.pop(selected_index)
         self.current_card_index = max(0, self.current_card_index - 1)
         self.update_dropdown()
         self.display_card()
 
-
+        # Edits this flashcard
     def edit_flashcard(self):
         """ Edit the selected flashcard. """
         if not self.flashcards:
