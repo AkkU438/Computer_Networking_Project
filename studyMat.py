@@ -3,61 +3,58 @@ import customtkinter
 import json
 
 class FlashcardApp(GUIConfig):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.title("StudyBat Flashcards")
-        self.geometry("800x700")
+        
         self.current_card_index = 0
         self.flashcards = self.load_flashcards()
         self.showing_answer = False
+        
+        # Flashcard Number Label (Centered above question)
+        self.card_number_label = customtkinter.CTkLabel(self, text="", justify="center")
+        self.card_number_label.grid(row=1, column=0, columnspan=3, pady=(10, 5), sticky="ew")
 
-        # Remove logo to streamline for flashcards
-        self.image_label.destroy()
-
-        # Flashcard display area
-        self.card_label = customtkinter.CTkLabel(self, text="", font=("Arial", 20), justify="center", wraplength=600)
-        self.card_label.grid(row=1, column=0, columnspan=3, pady=20, padx=20)
-
-        self.card_number_label = customtkinter.CTkLabel(self, text="", font=("Arial", 16))
-        self.card_number_label.grid(row=2, column=0, columnspan=3, pady=10)
+        # Flashcard Question/Answer Label
+        self.card_label = customtkinter.CTkLabel(self, text="", justify="center", wraplength=600)
+        self.card_label.grid(row=2, column=0, columnspan=3, padx=20, pady=10, sticky="ew")
 
         # Buttons for flipping and navigation
         self.flip_button = customtkinter.CTkButton(self, text="Flip", command=self.flip_card)
-        self.flip_button.grid(row=3, column=1, pady=10)
+        self.flip_button.grid(row=3, column=1, pady=10, padx = 10, sticky="ew")
 
         self.prev_button = customtkinter.CTkButton(self, text="Previous", command=self.prev_card)
-        self.prev_button.grid(row=3, column=0, pady=10)
+        self.prev_button.grid(row=3, column=0, pady=10, padx = 10, sticky="ew")
 
         self.next_button = customtkinter.CTkButton(self, text="Next", command=self.next_card)
-        self.next_button.grid(row=3, column=2, pady=10)
+        self.next_button.grid(row=3, column=2, pady=10, padx = 10, sticky="ew")
 
         # Input fields for creating new flashcards
         self.new_question_entry = customtkinter.CTkEntry(self, placeholder_text="Enter question here")
-        self.new_question_entry.grid(row=4, column=0, padx=10, pady=10)
+        self.new_question_entry.grid(row=6, column=0, columnspan=3, padx=10, pady=5, sticky="ew")
 
         self.new_answer_entry = customtkinter.CTkEntry(self, placeholder_text="Enter answer here")
-        self.new_answer_entry.grid(row=4, column=1, padx=10, pady=10)
+        self.new_answer_entry.grid(row=7, column=0, columnspan=3, padx=10, pady=5, sticky="ew")
 
         self.add_card_button = customtkinter.CTkButton(self, text="Add Flashcard", command=self.add_flashcard)
-        self.add_card_button.grid(row=4, column=2, padx=10, pady=10)
+        self.add_card_button.grid(row=8, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
         # Dropdown to select flashcard for editing or deletion
         self.selected_card_var = customtkinter.StringVar()
         self.card_dropdown = customtkinter.CTkComboBox(
             self, values=[], variable=self.selected_card_var, state="readonly"
         )
-        self.card_dropdown.grid(row=5, column=0, columnspan=2, padx=10, pady=10, sticky="w")
+        self.card_dropdown.grid(row=4, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
         # Edit and Delete buttons
-        self.edit_card_button = customtkinter.CTkButton(self, text="Edit Flashcard", command=self.edit_flashcard)
-        self.edit_card_button.grid(row=5, column=1, padx=10, pady=10)
+        self.edit_card_button = customtkinter.CTkButton(self, text="Edit", command=self.edit_flashcard)
+        self.edit_card_button.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
 
-        self.delete_card_button = customtkinter.CTkButton(self, text="Delete Flashcard", command=self.delete_flashcard)
-        self.delete_card_button.grid(row=5, column=2, padx=10, pady=10)
+        self.delete_card_button = customtkinter.CTkButton(self, text="Delete", command=self.delete_flashcard)
+        self.delete_card_button.grid(row=5, column=1, padx=10, pady=10, sticky="ew")
 
-        # Save button
-        self.save_button = customtkinter.CTkButton(self, text="Save Flashcards", command=self.save_flashcards)
-        self.save_button.grid(row=6, column=1, pady=20)
+        self.save_button = customtkinter.CTkButton(self, text="Save", command=self.save_flashcards)
+        self.save_button.grid(row=5, column=2, padx=10, pady=10, sticky="ew")
 
         # Display the first flashcard and populate dropdown
         self.display_card()
