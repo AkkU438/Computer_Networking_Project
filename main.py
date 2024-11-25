@@ -1,11 +1,24 @@
-from PIL import Image, ImageTk
 import customtkinter
-from GUIConfig import GUIConfig
-from home import home
+from PIL import Image, ImageTk
 
-class loginGUI(GUIConfig):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+        
+
+class loginGUI(customtkinter.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        #Standardized window size + grid: 28 columns (0-27) and 20 rows (0-19)
+        self.title("loginGUI")
+        self.geometry("1050x750") #window size
+        self.grid_columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), weight=1)
+        self.grid_rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19), weight=1)
+        #Adds logo to top left corner
+        logo_path = "StudyBat Logo.png"
+        logo = Image.open(logo_path)
+        logo = logo.resize((228, 50), Image.LANCZOS)
+        self.photo = ImageTk.PhotoImage(logo)
+        self.image_label = customtkinter.CTkLabel(self, image=self.photo, text="")
+        self.image_label.grid(row=0, column=0, padx=(10, 0), pady=(10, 0), sticky="nw")        
         
         #sign up information 
         #store username and password in dictionary, use initial ones for testing
@@ -67,4 +80,45 @@ class loginGUI(GUIConfig):
         #labels
         loginLabel = customtkinter.CTkLabel(self, text="Login/Sign Up", fg_color="transparent", text_color="gray14", font=("Agency FB Bold", 40))
         loginLabel.grid(row=9, column=8, sticky='ew')
+
+
+#main app window/start page:
+class main(customtkinter.CTk):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
         
+        #Standardized window size + grid: 28 columns (0-27) and 20 rows (0-19)      
+        self.title("studyBat")
+        self.geometry("1050x750") #window size
+        self.grid_columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), weight=1)
+        self.grid_rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19), weight=1)  
+           
+        #Adds logo to top left corner
+        logo_path = "StudyBat Logo.png"
+        logo = Image.open(logo_path)
+        logo = logo.resize((228, 50), Image.LANCZOS)
+        self.photo = ImageTk.PhotoImage(logo)
+        self.image_label = customtkinter.CTkLabel(self, image=self.photo, text="")
+        self.image_label.grid(row=0, column=0, padx=(10, 0), pady=(10, 0), sticky="nw")
+        
+        #start button + label
+        self.label = customtkinter.CTkLabel(self, text="Welcome to StudyBat!", font=("Agency FB Bold", 40))
+        self.label.grid(row=10, column=9, sticky="ew")
+        self.button = customtkinter.CTkButton(self, command=self.button_click, text="Start")
+        self.button.grid(row=12, column=9, sticky="ew")
+
+        self.toplevel_window = None
+    
+    
+    # add methods to app
+    def button_click(self):#opens login
+        if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
+            self.toplevel_window = loginGUI()  # create window if its None or destroyed
+        self.toplevel_window.focus() #TODO: fix focus
+        
+
+
+customtkinter.set_default_color_theme("customTheme.json")
+customtkinter.set_appearance_mode("dark")
+app = main()
+app.mainloop()

@@ -5,15 +5,20 @@ import json
 class FlashcardApp(GUIConfig):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.title("StudyBat Flashcards")
         
         self.current_card_index = 0
         self.flashcards = self.load_flashcards()
         self.showing_answer = False
-        
-        # Flashcard Number Label (Centered above question)
-        self.card_number_label = customtkinter.CTkLabel(self, text="", justify="center")
-        self.card_number_label.grid(row=1, column=0, columnspan=3, pady=(10, 5), sticky="ew")
+
+        # Remove logo to streamline for flashcards
+        self.image_label.destroy()
+
+        # Flashcard display area
+        self.card_label = customtkinter.CTkLabel(self, text="", font=("Arial", 20), justify="center", wraplength=600)
+        self.card_label.grid(row=1, column=0, columnspan=3, pady=20, padx=20)
 
         # Flashcard Question/Answer Label
         self.card_label = customtkinter.CTkLabel(self, text="", justify="center", wraplength=600)
@@ -165,3 +170,4 @@ customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("customTheme.json")
 app = FlashcardApp()
 app.mainloop()
+
