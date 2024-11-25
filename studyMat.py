@@ -3,23 +3,26 @@ import customtkinter
 import json
 
 class FlashcardApp(GUIConfig):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.title("StudyBat Flashcards")
-        self.geometry("800x700")
+        
+        
+        
         self.current_card_index = 0
         self.flashcards = self.load_flashcards()
         self.showing_answer = False
-
+        
         # Remove logo to streamline for flashcards
-        self.image_label.destroy()
+        #self.image_label.destroy()        
 
+        #need to work with frames
         # Flashcard display area
-        self.card_label = customtkinter.CTkLabel(self, text="", font=("Arial", 20), justify="center", wraplength=600)
-        self.card_label.grid(row=1, column=0, columnspan=3, pady=20, padx=20)
+        self.card_label = customtkinter.CTkLabel(self, text="", justify="center", wraplength=600)
+        self.card_label.grid(row=1, column=1, sticky="ew")
 
-        self.card_number_label = customtkinter.CTkLabel(self, text="", font=("Arial", 16))
-        self.card_number_label.grid(row=2, column=0, columnspan=3, pady=10)
+        self.card_number_label = customtkinter.CTkLabel(self, text="")
+        self.card_number_label.grid(row=2, column=1, sticky="ew")
 
         # Buttons for flipping and navigation
         self.flip_button = customtkinter.CTkButton(self, text="Flip", command=self.flip_card)
