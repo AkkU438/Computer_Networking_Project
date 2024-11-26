@@ -23,12 +23,14 @@ class GUIConfig(customtkinter.CTk):
         
            
         #Adds logo to top left corner
+        
         logo_path = "StudyBat_Logo.png"
         logo = Image.open(logo_path)
         logo = logo.resize((228, 50), Image.LANCZOS)
         self.photo = ImageTk.PhotoImage(logo)
         self.image_label = customtkinter.CTkLabel(self, image=self.photo, text="")
         self.image_label.grid(row=0, column=0, padx=(10, 0), pady=(10, 0), sticky="nw")
+        
         
         
 

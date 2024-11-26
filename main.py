@@ -1,7 +1,8 @@
 import customtkinter
 from PIL import Image, ImageTk
-
-        
+import threading
+from server import server
+from player import UDPClient
 
 class loginGUI(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
@@ -88,13 +89,14 @@ class main(customtkinter.CTk):
         super().__init__()
         
         #Standardized window size + grid: 28 columns (0-27) and 20 rows (0-19)      
+        self.scheduled_task = None
         self.title("studyBat")
         self.geometry("1050x750") #window size
         self.grid_columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), weight=1)
         self.grid_rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19), weight=1)  
            
         #Adds logo to top left corner
-        logo_path = "StudyBat Logo.png"
+        logo_path = "StudyBat_Logo.png"
         logo = Image.open(logo_path)
         logo = logo.resize((228, 50), Image.LANCZOS)
         self.photo = ImageTk.PhotoImage(logo)
@@ -115,10 +117,28 @@ class main(customtkinter.CTk):
         if self.toplevel_window is None or not self.toplevel_window.winfo_exists():
             self.toplevel_window = loginGUI()  # create window if its None or destroyed
         self.toplevel_window.focus() #TODO: fix focus
-        
 
+    def schedule_update(self):
+        self.scheduled_task = self.after(1000, self.update_task)
 
-customtkinter.set_default_color_theme("customTheme.json")
-customtkinter.set_appearance_mode("dark")
-app = main()
-app.mainloop()
+    def update_task(self):
+        if self.winfo_exits():
+            print("Updating...")
+            self.schedule_update()
+
+    def close_app(self):
+        if self.scheduled_task:
+            self.after_cancel(self.scheduled_task)
+        self.destroy()
+
+if __name__ == "__main__":
+    server_thread = threading.Thread(target = server, daemon = True)
+    server_thread.start()
+    client_thread = threading.Thread(target = UDPClient, daemon = True)
+    client_thread.start()
+
+    customtkinter.set_default_color_theme("customTheme.json")
+    customtkinter.set_appearance_mode("dark")
+    app = main()
+    app.protocol("WM_DELETE_WINDOW", app.close_app)
+    app.mainloop()
