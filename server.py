@@ -1,11 +1,8 @@
 import socket
 
-# Server setup
-HOST = "127.0.0.1"
-PORT = 12345
-
-
-def main():
+def server():
+    HOST = "127.0.0.1"
+    PORT = 12345
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_socket.bind((HOST, PORT))
     print(f"Server running on {HOST}:{PORT}")
@@ -33,7 +30,3 @@ def main():
         except Exception as e:
             print(f"Error: {e}")
             break
-
-
-if __name__ == "__main__":
-    main()

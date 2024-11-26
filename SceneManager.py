@@ -1,5 +1,5 @@
 import customtkinter
-from game import game
+from game import FlashcardGame
 from gameOver import gameOver
 from home import home
 
@@ -13,7 +13,7 @@ class SceneManager(customtkinter.CTk):
 
         # Add scenes and pass the client object to each scene
         self.scenes = {}
-        self.add_scene("Game", game(self, self, client))
+        self.add_scene("Game", FlashcardGame(self, self, client))
         self.add_scene("Game Over", gameOver(self, self, client))
         self.add_scene("Home", home(self, self, client))
 
