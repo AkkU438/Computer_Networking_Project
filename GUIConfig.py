@@ -5,13 +5,13 @@ class GUIConfig(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        #Standardized window size + grid: 28 columns (0-27) and 20 rows (0-19)
+        # Standardized window size + grid: 28 columns (0-27) and 20 rows (0-19)
         self.title("studyBat")
         self.geometry("1050x750") #window size
         self.grid_columnconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), weight=1)
         self.grid_rowconfigure((0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19), weight=1)
 
-        #Example for how to add widgets/elements with grid, look at documentation for more information: https://customtkinter.tomschimansky.com
+        # Example for how to add widgets/elements with grid, look at documentation for more information: https://customtkinter.tomschimansky.com
         """ self.button1 = customtkinter.CTkButton(self, text="Login")
         self.button1.grid(row=1, column=0, sticky="nw")
 
