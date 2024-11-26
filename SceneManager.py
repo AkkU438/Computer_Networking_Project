@@ -2,6 +2,11 @@ import customtkinter
 from game import FlashcardGame
 from gameOver import gameOver
 from home import home
+from GUIConfig import GUIConfig
+from loginGUI import loginGUI
+from player import UDPClient
+from studyMat import FlashcardApp
+
 
 class SceneManager(customtkinter.CTk):
     def __init__(self, client):
@@ -15,6 +20,11 @@ class SceneManager(customtkinter.CTk):
         self.add_scene("Game", FlashcardGame(self, self, client))
         self.add_scene("Game Over", gameOver(self, self, client))
         self.add_scene("Home", home(self, self, client))
+        self.add_scene("GUI_Config", GUIConfig(self,self,client))
+        self.add_scene("Login_Config", loginGUI(self,self,client))
+        self.add_scene("Player", UDPClient(self,self,client))
+        self.add_scene("StudyMats", FlashcardApp(self,self,client))
+        
 
         self.show_scene("Home")
     
