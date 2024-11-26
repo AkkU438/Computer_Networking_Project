@@ -1,35 +1,34 @@
-
+from GUIConfig import GUIConfig
 from studyMat import FlashcardApp
 import customtkinter
 import json
 import random
 
 
-class FlashcardGame(customtkinter.CTk):
+class FlashcardGame(GUIConfig):
     def __init__(self):
         super().__init__()
         self.title("Flashcard Game")
-        self.geometry("800x600")
         self.points = 0
         self.current_flashcard = None
         self.flashcards = self.load_flashcards()
         random.shuffle(self.flashcards)
 
         # Display score
-        self.score_label = customtkinter.CTkLabel(self, text=f"Score: {self.points}", font=("Arial", 20))
-        self.score_label.pack(pady=20)
+        self.score_label = customtkinter.CTkLabel(self, text=f"Score: {self.points}")
+        self.score_label.grid(row=1, column=2, sticky="ew")
 
         # Flashcard question display
-        self.question_label = customtkinter.CTkLabel(self, text="", font=("Arial", 20), wraplength=600, justify="center")
-        self.question_label.pack(pady=20)
+        self.question_label = customtkinter.CTkLabel(self, text="", wraplength=600, justify="center")
+        self.question_label.grid(row=2, column=2, sticky="ew")
 
         # Answer entry
         self.answer_entry = customtkinter.CTkEntry(self, placeholder_text="Type your answer here", width=400)
-        self.answer_entry.pack(pady=10)
+        self.answer_entry.grid(row=3, column=2, sticky="ew")
 
         # Submit button
         self.submit_button = customtkinter.CTkButton(self, text="Submit", command=self.check_answer)
-        self.submit_button.pack(pady=10)
+        self.submit_button.grid(row=4, column=2, sticky="ew")
 
         # Load the first flashcard
         self.load_next_flashcard()
