@@ -16,19 +16,19 @@ class FlashcardGame(GUIConfig):
 
         # Display score
         self.score_label = customtkinter.CTkLabel(self, text=f"Score: {self.points}")
-        self.score_label.grid(row=1, column=0, pady=20, sticky="ew")
+        self.score_label.grid(row=1, column=2, sticky="ew")
 
         # Flashcard question display
         self.question_label = customtkinter.CTkLabel(self, text="", wraplength=600, justify="center")
-        self.question_label.grid(row=2, column=0, pady=20, sticky="ew")
+        self.question_label.grid(row=2, column=2, sticky="ew")
 
         # Answer entry
         self.answer_entry = customtkinter.CTkEntry(self, placeholder_text="Type your answer here", width=400)
-        self.answer_entry.grid(row=3, column=0, pady=20, sticky="ew")
+        self.answer_entry.grid(row=3, column=2, sticky="ew")
 
         # Submit button
         self.submit_button = customtkinter.CTkButton(self, text="Submit", command=self.check_answer)
-        self.submit_button.grid(row=4, column=0, pady=20, sticky="ew")
+        self.submit_button.grid(row=4, column=2, sticky="ew")
 
         # Load the first flashcard
         self.load_next_flashcard()
@@ -76,4 +76,3 @@ if __name__ == "__main__":
     customtkinter.set_default_color_theme("customTheme.json")
     app = FlashcardGame()
     app.mainloop()
-
