@@ -7,7 +7,6 @@ class SceneManager(customtkinter.CTk):
     def __init__(self, client):
         super().__init__()
         self.title("Scene Manager")
-        self.geometry("800x600")
         
         self.client = client  # Store the client object for scene access
 
