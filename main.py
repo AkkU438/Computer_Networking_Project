@@ -74,8 +74,8 @@ class game(customtkinter.CTkToplevel):
         user_answer = self.answer_entry.get().strip()
         
         #Connects with server
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect(("127.0.0.1", 65432))
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        server_address = (("127.0.0.1", 65432))
         
         correct_answer = self.current_flashcard["answer"]
 
@@ -84,13 +84,20 @@ class game(customtkinter.CTkToplevel):
             self.score_label.configure(text=f"Score: {self.points}")
             self.question_label.configure(text="Correct!")
             server_message = f"That's right!\nServer: {self.server_points}\nYou: {self.points}"
-            client_socket.sendall(server_message.encode())
         else:
             self.server_points+=1
             self.question_label.configure(text=f"Incorrect. The correct answer was: {correct_answer}")
             server_message = f"That's wrong, one point for me!\nServer: {self.server_points}\nYou: {self.points}"
-            client_socket.sendall(server_message.encode())
 
+        client_socket.sendto(server_message.encode(), server_address)
+        
+        try:
+            response, _ = client_socket.recvfrom(1024)
+            print(f"Server responded: {response.decode()}")
+        except socket.timeout:
+            print("No response from server")
+
+        client_socket.close()
         self.after(1000, self.load_next_flashcard)  #Show next question after 1 second
 
     def quitToHome(self):
@@ -101,8 +108,8 @@ class game(customtkinter.CTkToplevel):
     #Display final score
     def end_game(self):
         #Connects with server
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect(("127.0.0.1", 65432))
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        server_address = (("127.0.0.1", 65432))
         
         self.question_label.configure(text=f"Game over.\nYour final score is {self.points}")
         
@@ -114,7 +121,15 @@ class game(customtkinter.CTkToplevel):
         if(self.server_points==self.points):
             server_message = "It's a tie! Better try again..."
         
-        client_socket.sendall(server_message.encode())
+        client_socket.sendto(server_message.encode(), server_address)
+        
+        try:
+            response, _ = client_socket.recvfrom(1024)
+            print(f"Server responded: {response.decode()}")
+        except socket.timeout:
+            print("No response from server")
+
+        client_socket.close()
         self.answer_entry.destroy()
         self.submit_button.destroy()
         #Quit to home button
